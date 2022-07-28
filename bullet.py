@@ -3,6 +3,7 @@ import pygame
 
 class Bullet:
     def __init__(self,gun):
+        self.image = pygame.image.load(r"gun-pack\5 Bullets\10.png")
         self.point = gun.head
         self.x_pos , self.y_pos = self.point
         self.width = 4
@@ -17,5 +18,6 @@ class Bullet:
         self.y_pos -= self.y_vel #increases the bullets y speed
 
     def draw(self,win):
-        pygame.draw.rect(win,(255,0,0),[self.x_pos,self.y_pos,self.width,self.height]) 
+        win.blit(self.image,(self.x_pos,self.y_pos))
+        # pygame.draw.rect(win,(255,0,0),[self.x_pos,self.y_pos,self.width,self.height]) 
 
