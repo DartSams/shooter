@@ -1,7 +1,6 @@
 import pygame
 import math
-from bullet import Bullet
-from constants import *
+import OOP
 
 class Gun:
     def __init__(self,x_pos,y_pos,image,ammo,bullet_type,player):
@@ -25,7 +24,7 @@ class Gun:
 
     def shoot(self,gun_lst):
         # print(self.ammo)
-        shot = Bullet(self)
+        shot = OOP.Bullet(self)
         if self.ammo >= 0 or self.full_auto==True: #stops from non stop firing rockets shouldnt have full auto
             gun_lst.append(shot)
             # self.bullet_group.add(shot)

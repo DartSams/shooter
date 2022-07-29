@@ -1,6 +1,6 @@
 import pygame
-from enemy import Enemy
 import random
+import OOP
 
 class Level:
     def __init__(self,level_num):
@@ -11,7 +11,7 @@ class Level:
 
     def draw_enemy(self):
         for i in range(self.enemy_amount):
-            self.enemy_lst.append(Enemy(random.randrange(0,700),random.randrange(-100,0)))
+            self.enemy_lst.append(OOP.Enemy(random.randrange(0,700),random.randrange(-100,0)))
 
     def win_level(self):
         pass

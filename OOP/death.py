@@ -1,12 +1,12 @@
 import pygame
 
-
 class Death(pygame.sprite.Sprite):
-	def __init__(self, x, y):
+	def __init__(self,sprite, x, y):
 		pygame.sprite.Sprite.__init__(self)
 		self.images = []
-		for num in range(1, 15):
-			img = pygame.image.load(rf"ghost-pack\PNG\Wraith_03\PNG Sequences\Dying\Wraith_03_Dying_{num}.png")
+		self.sprite = sprite
+		for num in range(1, 15):    
+			img = pygame.image.load(fr"ghost-pack\PNG\{self.sprite}\PNG Sequences\Dying\{self.sprite}_Dying_{num}.png")
 			img = pygame.transform.scale(img, (100, 100))
 			self.images.append(img)
 		self.index = 0
