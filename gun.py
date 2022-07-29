@@ -1,6 +1,8 @@
 import pygame
 import math
 from bullet import Bullet
+from constants import *
+
 class Gun:
     def __init__(self,x_pos,y_pos,image,ammo,bullet_type,player):
         self.x_pos = x_pos
@@ -9,7 +11,10 @@ class Gun:
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.ammo = ammo
+        self.original_clip = ammo
+        self.full_auto = True
         self.bullet_type = bullet_type
+        self.bullet_group = pygame.sprite.Group()
         self.player = player
         self.image = pygame.transform.scale2x(self.image)
         self.rotimage = 0
@@ -19,12 +24,12 @@ class Gun:
         self.head = (self.x_pos +  self.cos * self.width//2,self.y_pos - self.sin * self.height//2)
 
     def shoot(self,gun_lst):
-        self.ammo -= 1
+        # print(self.ammo)
         shot = Bullet(self)
-        if self.ammo >= 0: #stops from non stop firing rockets shouldnt have full auto
+        if self.ammo >= 0 or self.full_auto==True: #stops from non stop firing rockets shouldnt have full auto
             gun_lst.append(shot)
-
-        
+            # self.bullet_group.add(shot)
+        self.ammo -= 1        
         
 
     def draw(self,win):
