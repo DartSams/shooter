@@ -4,19 +4,19 @@ import random
 
 width,height = 700,700
 win = pygame.display.set_mode((width,height))
-clock = pygame.time.Clock()   
-fps = 60
+pygame.font.init()
 black = (0,0,0)
 white = (255,255,255)
 red = (255,0,0)
 blue = (0,0,255)
 green = (0,255,0)
-playing = True
-velocity = 5
-gravity = 4
+velocity = 9
+gravity = 2
+lvl = OOP.Level(1)
 selected_gun = "rocket" #sets the gun for the player to use
 selected_player = "Wraith_03" #sets the player sprite
 selected_enemy = "Wraith_01" #sets the enemy sprite
+
 player_right = pygame.image.load(rf"ghost-pack\PNG\{selected_player}\{selected_player}_Idle_000_right.png")
 player_left = pygame.image.load(rf"ghost-pack\PNG\{selected_player}\{selected_player}_Idle_000_left.png")
 target_image = pygame.image.load(rf"ghost-pack\PNG\{selected_enemy}\PNG Sequences\Idle\{selected_enemy}_Idle_1.png")
@@ -50,8 +50,7 @@ gun_bullets = [] #list that holds the bullets
 enemy_lst = [] #list that holds the enemies
 player_lst = [] #list that holds the players
 
-for i in range(30+1): #creates 30 enemy objects to attack the player
-    enemy_lst.append(OOP.Enemy(random.randrange(0,width-4),random.randrange(-10000,0)))
+lvl.start_level()
 
 player_group = pygame.sprite.Group() #creates a sprite group for player animations
 player_group.add(player) #adds the player object instance to the player group

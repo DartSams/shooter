@@ -11,6 +11,16 @@ class Player(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image,(100,100))
         self.rect = self.image.get_rect()
         self.mask = pygame.mask.from_surface(self.image)
+        # self.images = []
+        # for num in range(1, 15):    
+        #     # img = pygame.image.load(fr"ghost-pack\PNG\{self.sprite}\PNG Sequences\Dying\{self.sprite}_Dying_{num}.png")
+        #     img = pygame.transform.scale(self.image, (100, 100))
+        #     self.images.append(img)
+        # self.index = 0
+        # self.image = self.images[self.index]
+        # self.rect = self.image.get_rect()
+        # self.rect.center = [self.x_pos, self.y_pos]
+        # self.counter = 0
 
     def draw(self,win):
         win.blit(self.image,(self.x_pos,self.y_pos))
