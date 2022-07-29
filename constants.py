@@ -21,7 +21,7 @@ rocket_image = pygame.image.load(r"gun-pack\2 Guns\10_1.png")
 player_right = pygame.image.load(r"ghost-pack\PNG\Wraith_03\PNG Sequences\Idle\Wraith_03_Idle_000_right.png")
 player_left = pygame.image.load(r"ghost-pack\PNG\Wraith_03\PNG Sequences\Idle\Wraith_03_Idle_000_left.png")
 player = Player(300,300,player_right,3)
-target_image = pygame.image.load(r"ghost-pack\PNG\Wraith_01\PNG Sequences\Idle\Wraith_01_Idle_001.png")
+target_image = pygame.image.load(r"ghost-pack\PNG\Wraith_03\PNG Sequences\Idle\Wraith_03_Idle_001.png")
 clock = pygame.time.Clock()
 starting_level = 1
 # lvl = Level(starting_level)
@@ -44,7 +44,6 @@ rocket2 = Gun(player.x_pos,player.y_pos,arsenal["rocket"]["image"],arsenal["rock
 ak47 = Gun(player.x_pos,player.y_pos,arsenal["ak-47"]["image"],arsenal["ak-47"]["ammo"],arsenal["ak-47"]["bullet"],player)
 ak472 = Gun(player.x_pos,player.y_pos,arsenal["ak-47"]["image"],arsenal["ak-47"]["ammo"],arsenal["ak-47"]["bullet"],player)
 gun_bullets = []
-bullet_group = pygame.sprite.Group()
 loadout = [rocket,rocket2]
 enemy_lst = []
 enemy_group = pygame.sprite.Group()
@@ -53,4 +52,6 @@ enemy_group = pygame.sprite.Group()
 
 for i in range(30):
     enemy_lst.append(Enemy(random.randrange(0,width-4),random.randrange(-10000,0)))
-target = Target(random.randrange(0,width-100),random.randrange(0,height-100),target_image,player)
+target = Target(random.randrange(0,width-100),random.randrange(0,height-100),target_image)
+
+death_group = pygame.sprite.Group()

@@ -24,7 +24,7 @@ class Bullet:
         win.blit(self.image,(self.x_pos,self.y_pos))
         # pygame.draw.rect(win,(255,0,0),[self.x_pos,self.y_pos,self.width,self.height]) 
 
-    def collide(self,enemy):
+    def hit(self,enemy):
         offset = (int(self.x_pos-enemy.x_pos),int(self.y_pos-enemy.y_pos))
         collided = enemy.mask.overlap(self.mask,offset)
         return collided
