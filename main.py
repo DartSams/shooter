@@ -7,13 +7,12 @@ import OOP
 pygame.init()
 pygame.display.set_caption("Shooter")
 pygame.time.set_timer(pygame.USEREVENT, 1000)
-
 while lvl.playing:
     lvl.clock.tick(lvl.fps)
-
+    lvl.playing = lvl.win_level() #on each game loop sets the playing state to be True or False based on the players progress
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            lvl.playing = False
+            lvl.playing = False 
             break
 
         if event.type == pygame.USEREVENT: #decrements the set timer in each level 
@@ -21,8 +20,9 @@ while lvl.playing:
             lvl.time_str = str(lvl.time) 
             if lvl.time > 0:
                 pass
-            else: #when timer reaches 0 then 
-                lvl.playing = True
+            else: #when level timer reaches 0 then 
+                print("Time ran out")
+                lvl.playing = lvl.lose_level()
             # print(lvl.text)
 
         if event.type == pygame.KEYDOWN: #detects any keyboard key presses
@@ -30,8 +30,6 @@ while lvl.playing:
                 for i in arsenal[selected_gun]["loadout"]:
                     i.shoot(gun_bullets)
 
-    # player.x_pos += player.x_vel
-    # player.y_pos += player.y_vel
 
     keys = pygame.key.get_pressed() #detecting multiple keys at once
     if keys[pygame.K_d]: #moves right
@@ -41,7 +39,6 @@ while lvl.playing:
     if keys[pygame.K_a]:#moves left
         player.x_pos -= velocity
         player.image = pygame.transform.scale(player_left,(100,100)) #changes the orientation of the image to the left
-
     if keys[pygame.K_w]:#moves up
         player.y_pos -= velocity
 
@@ -52,11 +49,19 @@ while lvl.playing:
         i.move() #increases the x and y coordinates of each bullet object
         rect = i.image.get_rect()
         if i.hit(target): #collision using mask by passing in what i want to detect colliding with then resets enemy position
-            lvl.increase_score() #increments the player score on successful hits on the targets
-            death = OOP.Death(selected_target,target.x_pos+target.image.get_width()/2, target.y_pos+target.image.get_height()/2) #creates death animation class for target by passing in targer coordinates
-            death_group.add(death)
-            target.x_pos = random.randrange(0,width-target.image.get_width()) #resets targets x position to random coordinate within the window width
-            target.y_pos = random.randrange(0,height-target.image.get_height()) #resets targets y position to random coordinate within the window height
+            gun_bullets.remove(i) #when bullet hits target stop drawing bullet
+            target.target_health_offset -= 1 #subtracts targets health by 1 on every hit
+            print(target.heathbar.width)
+            target.healthbar_width -= 20 ##TODO #change this 20 to a variable in guns that do damage
+            if target.target_health_offset == 0: #when target health reaches 0 target is now dead
+                lvl.increase_score() #increments the player score on successful target kills
+                death = OOP.Death(selected_target,target.x_pos+target.image.get_width()/2, target.y_pos+target.image.get_height()/2) #creates death animation class for target by passing in targer coordinates
+                death_group.add(death) 
+                for t in target_group: #stops drawing all target animations
+                    t.kill()
+                target = OOP.Target(random.randrange(0,width-100),random.randrange(0,height-100),target_image,target_health,selected_target) #creates a new target object for player to shoot
+                target_group.add(target)
+
 
     for i in lvl.enemy_lst:
         # print(i.y_pos)
@@ -76,11 +81,11 @@ while lvl.playing:
             #moves the players x and y coords off screen
             player.x_pos = -1000 
             player.y_pos = -1000
-            # print(i.hit(player))
-            # playing = lvl.lose_level() #ends the game loop
 
             ##TODO
             #make  a method in level class to stop the game and give option to restart
+            lvl.playing = lvl.lose_level() #ends the game loop
+            print("You died")
 
 
     arsenal[selected_gun]["loadout"][0].x_pos = player.x_pos + 80 #puts the gun in top right hovering above player sprite
