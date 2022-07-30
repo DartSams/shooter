@@ -12,16 +12,16 @@ blue = (0,0,255)
 green = (0,255,0)
 velocity = 9
 gravity = 2
-lvl = OOP.Level(1)
-selected_gun = "rocket" #sets the gun for the player to use
-selected_player = "Wraith_03" #sets the player sprite
-selected_enemy = "Wraith_01" #sets the enemy sprite
+starting_level = 1
+lvl = OOP.Level(starting_level)
 
+selected_player = "Wraith_01" #sets the player sprite
+selected_target = "Wraith_02" #sets the enemy sprite
 player_right = pygame.image.load(rf"ghost-pack\PNG\{selected_player}\{selected_player}_Idle_000_right.png")
 player_left = pygame.image.load(rf"ghost-pack\PNG\{selected_player}\{selected_player}_Idle_000_left.png")
-target_image = pygame.image.load(rf"ghost-pack\PNG\{selected_enemy}\PNG Sequences\Idle\{selected_enemy}_Idle_1.png")
-target = OOP.Target(random.randrange(0,width-100),random.randrange(0,height-100),target_image) #creates a target object for player to shoot
-player = OOP.Player(300,300,player_right,3)
+target_image = pygame.image.load(rf"ghost-pack\PNG\{selected_target}\PNG Sequences\Idle\{selected_target}_Idle_1.png")
+target = OOP.Target(random.randrange(0,width-100),random.randrange(0,height-100),target_image,selected_target) #creates a target object for player to shoot
+player = OOP.Player(300,300,player_right,3,selected_player)
 
 arsenal = {
     "rocket":{
@@ -37,7 +37,7 @@ arsenal = {
         "loadout":[]
     }
 }
-
+selected_gun = "rocket" #sets the gun for the player to use
 
 
 for name in arsenal.items(): 

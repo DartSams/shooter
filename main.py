@@ -22,13 +22,16 @@ while lvl.playing:
             if lvl.time > 0:
                 pass
             else: #when timer reaches 0 then 
-                lvl.playing = False
+                lvl.playing = True
             # print(lvl.text)
 
         if event.type == pygame.KEYDOWN: #detects any keyboard key presses
             if event.key == pygame.K_SPACE: #if spacebar is pressed shoots a bullet
                 for i in arsenal[selected_gun]["loadout"]:
                     i.shoot(gun_bullets)
+
+    # player.x_pos += player.x_vel
+    # player.y_pos += player.y_vel
 
     keys = pygame.key.get_pressed() #detecting multiple keys at once
     if keys[pygame.K_d]: #moves right
@@ -50,7 +53,7 @@ while lvl.playing:
         rect = i.image.get_rect()
         if i.hit(target): #collision using mask by passing in what i want to detect colliding with then resets enemy position
             lvl.increase_score() #increments the player score on successful hits on the targets
-            death = OOP.Death(selected_enemy,target.x_pos+target.image.get_width()/2, target.y_pos+target.image.get_height()/2) #creates death animation class for target by passing in targer coordinates
+            death = OOP.Death(selected_target,target.x_pos+target.image.get_width()/2, target.y_pos+target.image.get_height()/2) #creates death animation class for target by passing in targer coordinates
             death_group.add(death)
             target.x_pos = random.randrange(0,width-target.image.get_width()) #resets targets x position to random coordinate within the window width
             target.y_pos = random.randrange(0,height-target.image.get_height()) #resets targets y position to random coordinate within the window height

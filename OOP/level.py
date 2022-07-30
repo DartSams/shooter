@@ -21,15 +21,6 @@ class Level:
         self.score_text = self.font.render(f"Score: {str(self.score)}", True,(255,255,255))
         return self.score
 
-    def decrement_timer(self):
-        milliseconds = self.time * 100
-        for i in range(milliseconds):
-            milliseconds -= 1
-            if milliseconds % 100:
-                self.time = int(self.time) - 1
-                self.timer_text = self.font.render(f"{str(self.time)}s", True,(255,255,255))
-                return self.time
-
     def start_level(self):
         self.draw_enemy() 
 
