@@ -1,10 +1,11 @@
 import pygame
 
 class Enemy:
-    def __init__(self,x_pos,y_pos,image):
+    def __init__(self,x_pos,y_pos,image,name):
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.image = image
+        self.name = name
         self.image = pygame.transform.scale(self.image,(30,30))
         self.mask = pygame.mask.from_surface(self.image)
 

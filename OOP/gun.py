@@ -24,7 +24,7 @@ class Gun:
     def shoot(self,gun_lst):
         # print(gun_lst)
         shot = OOP.Bullet(self)
-        if self.ammo >= 0 or self.full_auto==True: #stops from non stop firing rockets shouldnt have full auto
+        if self.ammo <= 0 or self.full_auto==True: #stops from non stop firing rockets shouldnt have full auto
             gun_lst.append(shot)
             # self.bullet_group.add(shot)
         self.ammo -= 1        
