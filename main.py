@@ -14,7 +14,7 @@ while lvl.playing:
             lvl.playing = False 
             break
 
-        if event.type == pygame.USEREVENT: #decrements the set timer in each level 
+        if event.type == pygame.USEREVENT: #decrements the set timer in each game loop 
             lvl.time -= 1
             lvl.time_str = str(lvl.time) 
             if lvl.time > 0: #while there is still time left
@@ -29,6 +29,10 @@ while lvl.playing:
                 for i in arsenal[selected_gun]["loadout"]:
                     i.shoot(gun_bullets)
 
+    if arsenal[selected_gun]["full_auto"] == True:
+        if pygame.mouse.get_pressed() == (1, 0, 0):
+            for i in arsenal[selected_gun]["loadout"]:
+                i.shoot(gun_bullets)
 
     keys = pygame.key.get_pressed() #detecting multiple keys at once
     if keys[pygame.K_d]: #moves right
@@ -59,6 +63,7 @@ while lvl.playing:
 
                 for t in target_group: #stops drawing all target animations
                     t.kill()
+                selected_target = random.choice(sprites)
                 target = OOP.Target(random.randrange(0,width-100),random.randrange(0,height-100),target_image,target_health,selected_target) #creates a new target object for player to shoot
                 target_group.add(target)
 
@@ -68,18 +73,20 @@ while lvl.playing:
         if i.y_pos > height: #if enemies are off screen resets their y position
             i.y_pos = random.randrange(-10000,0)
          
-        if i.hit(player) != None: #collision using mask by passing in what i want to detect colliding with 
-            playing = False
+        if i.hit(player) != None: #collision using mask by passing in what i want to detect colliding with
+            player.lives -= 1 #subtracts player health by 1 everytim a asteroid hits a player
             lvl.enemy_lst.remove(i) #when enemy hits player stop drawing enemy
-            death = OOP.Death(selected_player,player.x_pos+player.image.get_width()/2, player.y_pos+player.image.get_height()/2) #creates death animation class for target by passing in targer coordinates
-            death_group.add(death)
 
-            for player_individual in player_group: #removes the sprite from the group
-                player_individual.kill()
+            if player.lives <= 0: #when player is out of lives activates death animation for selected player object
+                death = OOP.Death(selected_player,player.x_pos+player.image.get_width()/2, player.y_pos+player.image.get_height()/2) #creates death animation class for target by passing in targer coordinates
+                death_group.add(death)
 
-            lvl.playing = lvl.lose_level() #ends the game loop
-            print("You died")
-            arsenal[selected_gun]["loadout"].clear() #if game loop is still running and player dies this removes the guns from the loadout
+                for player_individual in player_group: #removes the sprite from the group
+                    player_individual.kill()
+
+                lvl.playing = lvl.lose_level() #ends the game loop
+                print("You died")
+                arsenal[selected_gun]["loadout"].clear() #if game loop is still running and player dies this removes the guns from the loadout
 
     gun_offset = 0 #needed to make spacing for guns
     for gun in arsenal[selected_gun]["loadout"]: #cycles through the loadout and draws the guns first iteration draws the gun in the top left corner because the offset is 0 the 2nd iteration is in the top right corner becuase the offset is redeclared to be the player image width
@@ -88,11 +95,17 @@ while lvl.playing:
         gun_offset = player.image.get_width() #redeclares the offset to be the player image top right
     
 
-    win.fill(black)
+    win.fill(white)
     #text has to be placed here before drawing anything else so everything else is drawn in front of it
     win.blit(lvl.score_text,(0,0))
-    time_text = pygame.font.Font('freesansbold.ttf', 250).render(lvl.time_str, True, (100, 100, 100))
+    time_text = pygame.font.Font('freesansbold.ttf', 250).render(lvl.time_str, True, grey)
     win.blit(time_text, (width//2-time_text.get_width()//2,height//2-time_text.get_height()//2)) #draws timer to window and centers in middle of window
+
+    health_offset = 10 #creates a initial health image offset for spacing between the image and the right side of the screen
+    for i in range(player.lives): #draws player hearts in top right corner 
+        win.blit(health_image,(width-health_image.get_width() - health_offset,10))
+        health_offset += health_image.get_width() + 5 #gives the heart images spacing for better visual
+
     for g in arsenal[selected_gun]["loadout"]: #draws the selected loadout
         g.draw(win)
     # player.draw(win) 

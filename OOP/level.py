@@ -18,12 +18,13 @@ class Level:
         self.enemy = enemy_image
         self.score = 0
         self.max_score = 10
+        self.endless_level = False 
         self.font = pygame.font.Font('freesansbold.ttf', 32)  
-        self.score_text = self.font.render(f"Score: {str(self.score)}", True,(255,255,255))
+        self.score_text = self.font.render(f"Score: {str(self.score)}", True,(100, 100, 100))
 
     def increase_score(self):
         self.score = int(self.score) + 1
-        self.score_text = self.font.render(f"Score: {str(self.score)}", True,(255,255,255))
+        self.score_text = self.font.render(f"Score: {str(self.score)}", True,(100, 100, 100))
         return self.score
 
     def start_level(self,enemy_image):
@@ -33,12 +34,19 @@ class Level:
         for i in range(self.enemy_amount + 1):
             self.enemy_lst.append(OOP.Enemy(random.randrange(0,700-4),random.randrange(-10000,0),enemy_image))
 
+    def draw_powerup(self):
+        pass
+    
     def win_level(self): #called within every game loop iteration
-        if self.score == self.max_score: #game ends
-            print("You win")
-            return False
+        if self.endless_level == False: #sets the gamemode to be score based
+            if self.score == self.max_score: #game ends
+                print("You win")
+                return False
 
-        elif self.score != self.max_score: #game continous
+            elif self.score != self.max_score: #game continous
+                return True
+
+        elif self.endless_level == True: #sets the gamemode to a endless survival 
             return True
 
 

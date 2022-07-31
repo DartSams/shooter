@@ -10,6 +10,7 @@ class Player(pygame.sprite.Sprite):
         self.width = self.image.get_width()
         self.height = self.image.get_height()
         self.lives = lives
+        self.armor = 0
         self.selected_player = selected_player
         self.image = pygame.transform.scale(self.image,(100,100))
         self.rect = self.image.get_rect()
