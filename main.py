@@ -27,12 +27,22 @@ while lvl.playing:
         if event.type == pygame.KEYDOWN: #detects any keyboard key presses
             if event.key == pygame.K_SPACE: #if spacebar is pressed shoots a bullet
                 for i in arsenal[selected_gun]["loadout"]:
-                    i.shoot(gun_bullets)
+                    i.shoot(lvl.gun_bullets)
 
     if arsenal[selected_gun]["full_auto"] == True: #checks if the current gun has a full_auto feature
-        if pygame.mouse.get_pressed() == (1, 0, 0): #checks if left mouse button is pressed if True or 1 shoots a endless supply of bullet objects while held down
+        if pygame.mouse.get_pressed() == (1, 0, 0) and lvl.run_game == True: #checks if left mouse button is pressed if True or 1 shoots a endless supply of bullet objects while held down
             for i in arsenal[selected_gun]["loadout"]:
-                i.shoot(gun_bullets)
+                i.shoot(lvl.gun_bullets)
+
+        if pygame.mouse.get_pressed() == (1, 0, 0) and lvl.run_game == False: #checks if mouse clicks on buttons
+            mouse_x,mouse_y = event.pos
+            if start.collidepoint(mouse_x,mouse_y): #start button collision
+                print("start")
+                lvl.run_game = True
+
+            if exit.collidepoint(mouse_x,mouse_y): #start button collision
+                print("Ending game")
+                lvl.playing = False
 
     keys = pygame.key.get_pressed() #detecting multiple keys at once
     if keys[pygame.K_d]: #moves right
@@ -48,11 +58,11 @@ while lvl.playing:
     if keys[pygame.K_s]:#moves down
         player.y_pos += velocity
 
-    for i in gun_bullets: #when there are bullets in the list draws them to the screen
+    for i in lvl.gun_bullets: #when there are bullets in the list draws them to the screen
         i.move() #increases the x and y coordinates of each bullet object
 
         if i.hit(target) != None: #collision using mask by passing in what i want to detect colliding with then resets enemy position
-            gun_bullets.remove(i) #when bullet hits target stop drawing bullet
+            lvl.gun_bullets.remove(i) #when bullet hits target stop drawing bullet
             target.target_health -= arsenal[selected_gun]["damage"] #subtracts targets health by current guns damage
             # print(target.target_health)
 
@@ -143,36 +153,44 @@ while lvl.playing:
     
 
     # win.fill(black)
-    win.blit(bg,(0,0))
-    #text has to be placed here before drawing anything else so everything else is drawn in front of it
-    win.blit(lvl.score_text,(0,0))
-    time_text = pygame.font.Font('freesansbold.ttf', 250).render(lvl.time_str, True, grey)
-    win.blit(time_text, (width//2-time_text.get_width()//2,height//2-time_text.get_height()//2)) #draws timer to window and centers in middle of window
+    if lvl.run_game == True:
+        win.blit(bg,(0,0))
+        #text has to be placed here before drawing anything else so everything else is drawn in front of it
+        win.blit(lvl.score_text,(0,0))
+        time_text = pygame.font.Font('freesansbold.ttf', 250).render(lvl.time_str, True, grey)
+        win.blit(time_text, (width//2-time_text.get_width()//2,height//2-time_text.get_height()//2)) #draws timer to window and centers in middle of window
 
-    health_offset = 10 #creates a initial health image offset for spacing between the image and the right side of the screen
-    for i in range(player.lives): #draws player hearts in top right corner 
-        win.blit(health_image,(width-health_image.get_width() - health_offset,10))
-        health_offset += health_image.get_width() + 5 #gives the heart images spacing for better visual
+        health_offset = 10 #creates a initial health image offset for spacing between the image and the right side of the screen
+        for i in range(player.lives): #draws player hearts in top right corner 
+            win.blit(health_image,(width-health_image.get_width() - health_offset,10))
+            health_offset += health_image.get_width() + 5 #gives the heart images spacing for better visual
 
-    for g in arsenal[selected_gun]["loadout"]: #draws the selected loadout
-        g.draw(win)
-    # player.draw(win) 
-    for p in player_group: #draws player sprite
-        p.draw(win) #draws all of the death animations in sprite group 
-        p.update()
-    for b in gun_bullets: #draws bullets
-        b.draw(win)
-    # target.draw(win) #
-    for t in target_group: #draws target to hit
-        t.draw(win)
-        t.update()
-    for e in lvl.enemy_lst: #draws enemies
-        e.draw(win)
-    for item in lvl.powerup_lst: #draws items
-        item.draw(win)
+        for g in arsenal[selected_gun]["loadout"]: #draws the selected loadout
+            g.draw(win)
+        # player.draw(win) 
+        for p in player_group: #draws player sprite
+            p.draw(win) #draws all of the death animations in sprite group 
+            p.update()
+        for b in lvl.gun_bullets: #draws bullets
+            b.draw(win)
+        # target.draw(win) #
+        for t in target_group: #draws target to hit
+            t.draw(win)
+            t.update()
+        for e in lvl.enemy_lst: #draws enemies
+            e.draw(win)
+        for item in lvl.powerup_lst: #draws items
+            item.draw(win)
 
-    death_group.draw(win) #draws all of the death animations in sprite group 
-    death_group.update()
+        death_group.draw(win) #draws all of the death animations in sprite group 
+        death_group.update()
+
+    elif lvl.run_game == False:
+        win.blit(bg,(0,0))
+        name = win.blit(game_name,(width//2-game_name.get_width()//2,200-game_name.get_height()//2)) #draws the game name to the screen
+        start = win.blit(start_button,(width//2-start_button.get_width()//2,height-200-start_button.get_height()//2)) #draws the start button to the screen
+        exit = win.blit(exit_button,(width//2-exit_button.get_width()//2,height-100-exit_button.get_height()//2)) #draws the exit button to the screen
+
     pygame.display.update()
     
 

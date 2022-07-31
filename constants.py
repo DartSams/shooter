@@ -18,7 +18,7 @@ player_health = 3
 target_health = 100
 
 sprites = ["Wraith_01","Wraith_02","Wraith_03"]
-selected_player = "Wraith_01" #sets the player sprite
+selected_player = "Wraith_03" #sets the player sprite
 # selected_target = "Wraith_03" #sets the enemy sprite
 selected_target = random.choice(sprites) #sets the enemy sprite to random 
 player_right = pygame.image.load(rf"ghost-pack\PNG\{selected_player}\{selected_player}_Idle_000_right.png")
@@ -28,26 +28,16 @@ enemy_image = pygame.image.load(r"space-pack\PNG\Meteors\Meteor_03.png")
 health_image = pygame.image.load(r"space-pack\PNG\Bonus_Items\heart.png")
 bg = pygame.image.load(r"space-ui\PNG\Main_Menu\BG.png")
 bg = pygame.transform.scale(bg,(width,height*4))
+game_name = pygame.image.load(r"space-ui\PNG\Main_Menu\Header.png")
+game_name = pygame.transform.scale(game_name,(500,100))
+start_button = pygame.image.load(r"space-ui\PNG\Main_Menu\Start_BTN.png")
+start_button = pygame.transform.scale(start_button,(200,100))
+exit_button = pygame.image.load(r"space-ui\PNG\Main_Menu\Exit_BTN.png")
+exit_button = pygame.transform.scale(exit_button,(200,100))
 health_image = pygame.transform.scale(health_image,(30,30)) #rescales the image down to a 50x50 size
 target = OOP.Target(random.randrange(0,width-100),random.randrange(0,height-100),target_image,target_health,selected_target) #creates a target object for player to shoot
 player = OOP.Player(300,300,player_right,player_health,selected_player)
-# powerups = {
-#     "armor_bonus":{
-#         "image":pygame.image.load(r"space-pack\PNG\Bonus_Items\Armor_Bonus.png")
-#     },
-#     "damage_bonus":{
-#         "image":pygame.image.load(r"space-pack\PNG\Bonus_Items\Damage_Bonus.png")
-#     },
-#     "nuke":{
-#         "image":pygame.image.load(r"space-pack\PNG\Bonus_Items\Enemy_Destroy_Bonus.png")
-#     },
-#     "player_speed_debuff":{
-#         "image":pygame.image.load(r"space-pack\PNG\Bonus_Items\Hero_Movement_Debuff.png")
-#     },
-#     "player_health_bonus":{
-#         "image":pygame.image.load(r"space-pack\PNG\Bonus_Items\HP_Bonus.png")
-#     }
-# }   
+
 arsenal = {
     "ak-47":{
         "ammo":60,
@@ -132,24 +122,22 @@ arsenal = {
 }
 possible_guns = list(arsenal.keys()) #puts the keys of the arsenal dict into a list
 selected_gun = "laser" #sets the gun for the player to use
-# selected_gun = random.choice(possible_guns)
-for name in arsenal.items(): #cycles through all weapons in the arsenal dict to create a gun object for it and inserts in to the loadout of that weapon
-    for i in range(2):
-        name[1]["loadout"].append(OOP.Gun(player.x_pos,player.y_pos,arsenal[name[0]]["image"],arsenal[name[0]]["ammo"],arsenal[name[0]]["bullet"],arsenal[name[0]]["full_auto"]))
-    # print(name[1]["loadout"])
 
-
+blocks = [start_button,exit_button]
 gun_bullets = [] #list that holds the bullets
 enemy_lst = [] #list that holds the enemies
 player_lst = [] #list that holds the players
 
 
 player_group = pygame.sprite.Group() #creates a sprite group for player animations
-player_group.add(player) #adds the player object instance to the player group
+# player_group.add(player) #adds the player object instance to the player group
 death_group = pygame.sprite.Group() #creates a sprite group for death animations
 target_group = pygame.sprite.Group() #creates a sprite group for target animations
-target_group.add(target)
+# target_group.add(target)
 
-lvl = OOP.Level(starting_level,player_group,target_group,enemy_image,width,height)
-lvl.start_level(enemy_image)
-lvl.draw_powerup()
+lvl = OOP.Level(width,height,starting_level,player_group,target_group,enemy_image,arsenal)
+lvl.start_level(enemy_image) #starts drawing enemies to the window
+player_group.add(player) #adds the player object instance to the player group
+lvl.draw_guns()
+target_group.add(target)
+lvl.draw_powerup() #starts drawing powerups and items to the window
