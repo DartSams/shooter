@@ -9,7 +9,7 @@ class Level:
         self.playing = True
         self.fps = 60
         self.clock = pygame.time.Clock() 
-        self.time = 100
+        self.time = 30
         self.time_str = str(self.time)
         self.enemy_amount = 30
         self.enemy_lst = []
@@ -35,7 +35,7 @@ class Level:
 
     def win_level(self): #called within every game loop iteration
         if self.score == self.max_score: #game ends
-            print("You win round 1")
+            print("You win")
             return False
 
         elif self.score != self.max_score: #game continous

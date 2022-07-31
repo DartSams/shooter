@@ -1,5 +1,3 @@
-from re import T
-from tracemalloc import start
 import pygame
 from constants import *
 import OOP
@@ -10,6 +8,7 @@ pygame.time.set_timer(pygame.USEREVENT, 1000)
 while lvl.playing:
     lvl.clock.tick(lvl.fps)
     lvl.playing = lvl.win_level() #on each game loop sets the playing state to be True or False based on the players progress
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             lvl.playing = False 
@@ -18,7 +17,7 @@ while lvl.playing:
         if event.type == pygame.USEREVENT: #decrements the set timer in each level 
             lvl.time -= 1
             lvl.time_str = str(lvl.time) 
-            if lvl.time > 0:
+            if lvl.time > 0: #while there is still time left
                 pass
             else: #when level timer reaches 0 then 
                 print("Time ran out")
@@ -47,21 +46,21 @@ while lvl.playing:
 
     for i in gun_bullets: #when there are bullets in the list draws them to the screen
         i.move() #increases the x and y coordinates of each bullet object
-        rect = i.image.get_rect()
-        if i.hit(target): #collision using mask by passing in what i want to detect colliding with then resets enemy position
+
+        if i.hit(target) != None: #collision using mask by passing in what i want to detect colliding with then resets enemy position
             gun_bullets.remove(i) #when bullet hits target stop drawing bullet
-            target.target_health_offset -= 1 #subtracts targets health by 1 on every hit
-            print(target.heathbar.width)
-            target.healthbar_width -= 20 ##TODO #change this 20 to a variable in guns that do damage
-            if target.target_health_offset == 0: #when target health reaches 0 target is now dead
+            target.target_health -= arsenal[selected_gun]["damage"] #subtracts targets health by current guns damage
+            # print(target.target_health)
+
+            if target.target_health <= 0: #when target health reaches 0 target is now dead
                 lvl.increase_score() #increments the player score on successful target kills
                 death = OOP.Death(selected_target,target.x_pos+target.image.get_width()/2, target.y_pos+target.image.get_height()/2) #creates death animation class for target by passing in targer coordinates
                 death_group.add(death) 
+
                 for t in target_group: #stops drawing all target animations
                     t.kill()
                 target = OOP.Target(random.randrange(0,width-100),random.randrange(0,height-100),target_image,target_health,selected_target) #creates a new target object for player to shoot
                 target_group.add(target)
-
 
     for i in lvl.enemy_lst:
         # print(i.y_pos)
@@ -78,21 +77,15 @@ while lvl.playing:
             for player_individual in player_group: #removes the sprite from the group
                 player_individual.kill()
 
-            #moves the players x and y coords off screen
-            player.x_pos = -1000 
-            player.y_pos = -1000
-
-            ##TODO
-            #make  a method in level class to stop the game and give option to restart
             lvl.playing = lvl.lose_level() #ends the game loop
             print("You died")
+            arsenal[selected_gun]["loadout"].clear() #if game loop is still running and player dies this removes the guns from the loadout
 
-
-    arsenal[selected_gun]["loadout"][0].x_pos = player.x_pos + 80 #puts the gun in top right hovering above player sprite
-    arsenal[selected_gun]["loadout"][0].y_pos = player.y_pos 
-
-    arsenal[selected_gun]["loadout"][1].x_pos = player.x_pos  #puts the gun in top right hovering above player sprite
-    arsenal[selected_gun]["loadout"][1].y_pos = player.y_pos 
+    gun_offset = 0 #needed to make spacing for guns
+    for gun in arsenal[selected_gun]["loadout"]: #cycles through the loadout and draws the guns first iteration draws the gun in the top left corner because the offset is 0 the 2nd iteration is in the top right corner becuase the offset is redeclared to be the player image width
+        gun.x_pos = player.x_pos + gun_offset 
+        gun.y_pos = player.y_pos 
+        gun_offset = player.image.get_width() #redeclares the offset to be the player image top right
     
 
     win.fill(black)

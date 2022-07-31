@@ -7,6 +7,8 @@ class Player(pygame.sprite.Sprite):
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.image = image
+        self.width = self.image.get_width()
+        self.height = self.image.get_height()
         self.lives = lives
         self.selected_player = selected_player
         self.image = pygame.transform.scale(self.image,(100,100))

@@ -16,7 +16,7 @@ velocity = 9
 gravity = 2
 starting_level = 1
 player_health = 3
-target_health = 3 
+target_health = 100
 
 selected_player = "Wraith_01" #sets the player sprite
 selected_target = "Wraith_02" #sets the enemy sprite
@@ -48,12 +48,14 @@ arsenal = {
         "ammo":1,
         "image":pygame.image.load(r"gun-pack\2 Guns\10_1.png"),
         "bullet":pygame.image.load(r"gun-pack\5 Bullets\10.png"),
+        "damage":20,
         "loadout":[]
     },
     "ak-47":{
         "ammo":10,
         "image":pygame.image.load(r"gun-pack\2 Guns\1_1.png"),
         "bullet":pygame.image.load(r"gun-pack\5 Bullets\1_2.png"),
+        "damage":5,
         "loadout":[]
     }
 }
