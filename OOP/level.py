@@ -27,11 +27,11 @@ class Level:
         self.max_score = 10
         self.endless_level = False 
         self.font = pygame.font.Font('freesansbold.ttf', 30)  
-        self.score_text = self.font.render(f"Score: {str(self.score)}", True,(100, 100, 100))
+        self.score_text = self.font.render(f"Score: {str(self.score)}", True,(255,255,255))
 
     def increase_score(self):
         self.score = int(self.score) + 1
-        self.score_text = self.font.render(f"Score: {str(self.score)}", True,(100, 100, 100))
+        self.score_text = self.font.render(f"Score: {str(self.score)}", True,(255,255,255))
         return self.score
 
     def start_level(self,enemy_image):
@@ -52,16 +52,16 @@ class Level:
     def draw_powerup(self):
         powerups = {
             "damage_bonus":{ #guns git increased damage
-                "image":pygame.image.load(r"space-pack\PNG\Bonus_Items\Damage_Bonus.png"),
+                "image":pygame.image.load(r"assets\space-pack\Bonus_Items\Damage_Bonus.png"),
             },
             "nuke":{ #kill all enemies and targets on screen
-                "image":pygame.image.load(r"space-pack\PNG\Bonus_Items\Enemy_Destroy_Bonus.png"),
+                "image":pygame.image.load(r"assets\space-pack\Bonus_Items\Enemy_Destroy_Bonus.png"),
             },
             "player_speed_debuff":{ #player moves slower
-                "image":pygame.image.load(r"space-pack\PNG\Bonus_Items\Hero_Movement_Debuff.png"),
+                "image":pygame.image.load(r"assets\space-pack\Bonus_Items\Hero_Movement_Debuff.png"),
             },
             "player_health_bonus":{ #player get more lives
-                "image":pygame.image.load(r"space-pack\PNG\Bonus_Items\HP_Bonus.png"),
+                "image":pygame.image.load(r"assets\space-pack\Bonus_Items\HP_Bonus.png"),
             }
         }   
         # current_powerup_lst = [random.choice(list(powerups.keys())) for i in range(self.powerup_amount)]

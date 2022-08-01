@@ -19,7 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.y_vel = random.randrange(1,9)
         self.images = []
         for num in range(1, 12): #cycles through the folder of animations default is Idle    
-            img = pygame.image.load(fr"ghost-pack\PNG\{self.selected_player}\PNG Sequences\Idle\{self.selected_player}_Idle_{num}.png")
+            img = pygame.image.load(fr"assets\ghost-pack\PNG\{self.selected_player}\PNG Sequences\Idle\{self.selected_player}_Idle_{num}.png")
             img = pygame.transform.scale(img, (100, 100))
             self.images.append(img)
         self.index = 0

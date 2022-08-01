@@ -6,7 +6,7 @@ class Death(pygame.sprite.Sprite):
 		self.images = []
 		self.sprite = sprite
 		for num in range(1, 15):    
-			img = pygame.image.load(fr"ghost-pack\PNG\{self.sprite}\PNG Sequences\Dying\{self.sprite}_Dying_{num}.png")
+			img = pygame.image.load(fr"assets\ghost-pack\PNG\{self.sprite}\PNG Sequences\Dying\{self.sprite}_Dying_{num}.png")
 			img = pygame.transform.scale(img, (100, 100))
 			self.images.append(img)
 		self.index = 0

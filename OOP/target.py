@@ -17,7 +17,7 @@ class Target(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.images = []
         for num in range(1, 12): #cycles through the folder of animations default is Idle  
-            img = pygame.image.load(fr"ghost-pack\PNG\{self.selected_target}\PNG Sequences\Idle\{self.selected_target}_Idle_{num}.png")
+            img = pygame.image.load(fr"assets\ghost-pack\PNG\{self.selected_target}\PNG Sequences\Idle\{self.selected_target}_Idle_{num}.png")
             img = pygame.transform.scale(img, (100, 100))
             self.images.append(img)
         self.index = 0
