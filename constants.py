@@ -123,14 +123,15 @@ arsenal = {
         "loadout":[]
     }
 }
+
 possible_guns = list(arsenal.keys()) #puts the keys of the arsenal dict into a list
-selected_gun = "laser" #sets the gun for the player to use
+selected_gun = "laser" #sets the default gun later redefined when user clicks on gun on opening page
 
 blocks = [start_button,exit_button]
 gun_bullets = [] #list that holds the bullets
 enemy_lst = [] #list that holds the enemies
 player_lst = [] #list that holds the players
-
+gun_selection = {}
 
 player_group = pygame.sprite.Group() #creates a sprite group for player animations
 # player_group.add(player) #adds the player object instance to the player group

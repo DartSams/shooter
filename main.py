@@ -35,15 +35,17 @@ while lvl.playing:
             for i in arsenal[selected_gun]["loadout"]:
                 i.shoot(lvl.gun_bullets)
 
-        if pygame.mouse.get_pressed() == (1, 0, 0) and lvl.run_game == False: #checks if mouse clicks on buttons
-            mouse_x,mouse_y = event.pos
-            if start.collidepoint(mouse_x,mouse_y): #start button collision
-                print("Starting Game")
-                lvl.run_game = True
+    if pygame.mouse.get_pressed() == (1, 0, 0) and lvl.run_game == False: #checks if mouse clicks on buttons
+        pos = pygame.mouse.get_pos() #gets current mouse position
+        if start.collidepoint(pos[0],pos[1]): #start button collision with mouse position
+            print("Starting Game")
+            lvl.run_game = True #starts the game 
 
-            # if exit.collidepoint(mouse_x,mouse_y): #start button collision
-            #     print("Ending game")
-            #     lvl.playing = False
+        for gun in gun_selection: #cycles through gun selection dictionary
+            if gun_selection[gun].collidepoint(pos[0],pos[1]): #for any gun in dict checks if mouse clicks on it 
+                selected_gun = gun #sets the gun to be the gun the mouse clicked on
+                pygame.draw.rect(win,(255,180,0),[gun_selection[gun][0]-10,gun_selection[gun][1]-10,gun_selection[gun][2]+20,gun_selection[gun][3]+20],4) #draws a outline on the selected gun
+                pygame.display.update()
 
     keys = pygame.key.get_pressed() #detecting multiple keys at once
     if keys[pygame.K_d]: #moves right
@@ -85,7 +87,7 @@ while lvl.playing:
             i.y_pos = random.randrange(-10000,0)
 
         if i.hit(player) != None:
-            print(i.name)
+            # print(i.name)
 
             if i.name == "damage_bonus": #increases guns damage
                 print("Increasing guns damage")
@@ -97,8 +99,7 @@ while lvl.playing:
                     if enemy.y_pos>=0 and enemy.y_pos<height: 
                         lvl.enemy_lst.remove(enemy)
 
-                # for enemy in lvl.enemy_lst:
-                if target.y_pos>=0 and target.y_pos<height:
+                if target.y_pos>=0 and target.y_pos<height: #checks if target is on screen
                     lvl.increase_score() #increments the player score on successful target kills
                     death = OOP.Death(selected_target,target.x_pos+target.image.get_width()/2, target.y_pos+target.image.get_height()/2) #creates death animation class for target by passing in targer coordinates
                     death_group.add(death) 
@@ -185,29 +186,28 @@ while lvl.playing:
 
         death_group.draw(win) #draws all of the death animations in sprite group 
         death_group.update()
+        pygame.display.update()
 
     elif lvl.run_game == False:
         win.blit(loading_image,(0,0))
-        # win.blit(bg,(0,0))
-        print(possible_guns)
         offset = 0
-        for i in possible_guns[0:5]: #draws the first 5 weapons
-            print(i)
+        for i in possible_guns[0:5]: #draws the first 5 weapons on top row
+            # print(i)
             new_image = arsenal[i]["image"]
             new_image = pygame.transform.scale(new_image,(150,100))
-            win.blit(new_image,(0+new_image.get_width()+offset,height//2-200))
+            gun_image = win.blit(new_image,(0+new_image.get_width()+offset,height//2-200))
+            gun_selection[i] = gun_image
             offset += 200
 
-        for i in possible_guns[6:]: #draws the last 5 weapons
-            print(i)
+        offset = 0
+        for i in possible_guns[5:]: #draws the last 5 weapons on bottom row
             new_image = arsenal[i]["image"]
             new_image = pygame.transform.scale(new_image,(150,100))
-            win.blit(new_image,(0+new_image.get_width()+offset,height//2-200))
+            gun_image = win.blit(new_image,(0+new_image.get_width()+offset,height//2))
+            gun_selection[i] = gun_image
             offset += 200
-        # name = win.blit(game_name,(width//2-game_name.get_width()//2,200-game_name.get_height()//2)) #draws the game name to the screen
         start = win.blit(start_button,(width//2-start_button.get_width()//2,height-80-start_button.get_height()//2)) #draws the start button to the screen
-        # exit = win.blit(exit_button,(width//2-exit_button.get_width()//2,height-100-exit_button.get_height()//2)) #draws the exit button to the screen
-    pygame.display.update()
+        pygame.display.update()
     
 
 pygame.quit()
