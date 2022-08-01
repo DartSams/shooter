@@ -34,6 +34,9 @@ start_button = pygame.image.load(r"space-ui\PNG\Main_Menu\Start_BTN.png")
 start_button = pygame.transform.scale(start_button,(200,100))
 exit_button = pygame.image.load(r"space-ui\PNG\Main_Menu\Exit_BTN.png")
 exit_button = pygame.transform.scale(exit_button,(200,100))
+loading_image = pygame.image.load(r"space-ui\PNG\Level_Menu\Window.png")
+loading_image = pygame.transform.scale(loading_image,(width,height))
+
 health_image = pygame.transform.scale(health_image,(30,30)) #rescales the image down to a 50x50 size
 target = OOP.Target(random.randrange(0,width-100),random.randrange(0,height-100),target_image,target_health,selected_target) #creates a target object for player to shoot
 player = OOP.Player(300,300,player_right,player_health,selected_player)

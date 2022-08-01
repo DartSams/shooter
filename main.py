@@ -5,6 +5,7 @@ import OOP
 pygame.init()
 pygame.display.set_caption("Shooter")
 pygame.time.set_timer(pygame.USEREVENT, 1000)
+
 while lvl.playing:
     lvl.clock.tick(lvl.fps)
     lvl.playing = lvl.win_level() #on each game loop sets the playing state to be True or False based on the players progress
@@ -37,12 +38,12 @@ while lvl.playing:
         if pygame.mouse.get_pressed() == (1, 0, 0) and lvl.run_game == False: #checks if mouse clicks on buttons
             mouse_x,mouse_y = event.pos
             if start.collidepoint(mouse_x,mouse_y): #start button collision
-                print("start")
+                print("Starting Game")
                 lvl.run_game = True
 
-            if exit.collidepoint(mouse_x,mouse_y): #start button collision
-                print("Ending game")
-                lvl.playing = False
+            # if exit.collidepoint(mouse_x,mouse_y): #start button collision
+            #     print("Ending game")
+            #     lvl.playing = False
 
     keys = pygame.key.get_pressed() #detecting multiple keys at once
     if keys[pygame.K_d]: #moves right
@@ -186,11 +187,26 @@ while lvl.playing:
         death_group.update()
 
     elif lvl.run_game == False:
-        win.blit(bg,(0,0))
-        name = win.blit(game_name,(width//2-game_name.get_width()//2,200-game_name.get_height()//2)) #draws the game name to the screen
-        start = win.blit(start_button,(width//2-start_button.get_width()//2,height-200-start_button.get_height()//2)) #draws the start button to the screen
-        exit = win.blit(exit_button,(width//2-exit_button.get_width()//2,height-100-exit_button.get_height()//2)) #draws the exit button to the screen
+        win.blit(loading_image,(0,0))
+        # win.blit(bg,(0,0))
+        print(possible_guns)
+        offset = 0
+        for i in possible_guns[0:5]: #draws the first 5 weapons
+            print(i)
+            new_image = arsenal[i]["image"]
+            new_image = pygame.transform.scale(new_image,(150,100))
+            win.blit(new_image,(0+new_image.get_width()+offset,height//2-200))
+            offset += 200
 
+        for i in possible_guns[6:]: #draws the last 5 weapons
+            print(i)
+            new_image = arsenal[i]["image"]
+            new_image = pygame.transform.scale(new_image,(150,100))
+            win.blit(new_image,(0+new_image.get_width()+offset,height//2-200))
+            offset += 200
+        # name = win.blit(game_name,(width//2-game_name.get_width()//2,200-game_name.get_height()//2)) #draws the game name to the screen
+        start = win.blit(start_button,(width//2-start_button.get_width()//2,height-80-start_button.get_height()//2)) #draws the start button to the screen
+        # exit = win.blit(exit_button,(width//2-exit_button.get_width()//2,height-100-exit_button.get_height()//2)) #draws the exit button to the screen
     pygame.display.update()
     
 
