@@ -15,7 +15,7 @@ while lvl.playing:
             lvl.playing = False 
             break
 
-        if event.type == pygame.USEREVENT: #decrements the set timer in each game loop 
+        if event.type == pygame.USEREVENT and lvl.run_game == True: #decrements the set timer in each game loop 
             lvl.time -= 1
             lvl.time_str = str(lvl.time) 
             if lvl.time > 0: #while there is still time left
@@ -40,6 +40,11 @@ while lvl.playing:
         if start.collidepoint(pos[0],pos[1]): #start button collision with mouse position
             print("Starting Game")
             lvl.run_game = True #starts the game 
+            lvl.start_level(enemy_image) #starts drawing enemies to the window
+            player_group.add(player) #adds the player object instance to the player group
+            lvl.draw_guns()
+            target_group.add(target)
+            lvl.draw_powerup() #starts drawing powerups and items to the window
 
         for gun in gun_selection: #cycles through gun selection dictionary
             if gun_selection[gun].collidepoint(pos[0],pos[1]): #for any gun in dict checks if mouse clicks on it 

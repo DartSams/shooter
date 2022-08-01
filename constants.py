@@ -140,8 +140,9 @@ target_group = pygame.sprite.Group() #creates a sprite group for target animatio
 # target_group.add(target)
 
 lvl = OOP.Level(width,height,starting_level,player_group,target_group,enemy_image,arsenal)
-lvl.start_level(enemy_image) #starts drawing enemies to the window
-player_group.add(player) #adds the player object instance to the player group
-lvl.draw_guns()
-target_group.add(target)
-lvl.draw_powerup() #starts drawing powerups and items to the window
+# if lvl.run_game == True:
+# lvl.start_level(enemy_image) #starts drawing enemies to the window
+# player_group.add(player) #adds the player object instance to the player group
+# lvl.draw_guns()
+# target_group.add(target)
+# lvl.draw_powerup() #starts drawing powerups and items to the window
